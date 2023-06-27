@@ -5,5 +5,7 @@
 > 팀원 : 주영호, 고으뜸, 황원중
 # 기술스택
 Python, C, Ros, Opencv
+# 참고한 오픈소스
+https://github.com/huangdii/servingbot
 # 프로젝트 과정
 - [1일차: 주제 선정](20230627.md)
