@@ -1,14 +1,16 @@
 from PySide2.QtWidgets import *
 from PySide2.QtGui import *
 from PySide2.QtCore import *
+from BackButtonWindow import BackButtonWindow
 import sys
 import time
 
 class ButtonWindow(QWidget):
     def __init__(self, parent=None):
         QWidget.__init__(self, parent)
+        # QWidget.__init__(self, parent)
         self.setWindowTitle('Button Window')
-
+        self.show()
         # 서빙로봇 MOVE 버튼 생성
         self.moveButton1 = QPushButton('1번')
         self.moveButton1.clicked.connect(self.move)
@@ -85,25 +87,32 @@ class ButtonWindow(QWidget):
         self.buttonLayout5.addWidget(self.moveButton19)
         self.buttonLayout5.addWidget(self.moveButton20)
 
+        # 종료 버튼
+        self.closeButton = QPushButton('종료')
+        self.closeButton.clicked.connect(self.onClickClose)
+
         layout = QVBoxLayout()
         layout.addWidget(groupBox1)
         layout.addWidget(groupBox2)
         layout.addWidget(groupBox3)
         layout.addWidget(groupBox4)
         layout.addWidget(groupBox5)
+        layout.addWidget(self.closeButton)
 
         self.setLayout(layout)
         self.resize(500, 500)
 
+    def onClickClose(self):
+        self.close()
 
     def move(self):
-        pass
+        self.second = BackButtonWindow()
 
 
 if __name__ == '__main__':
     app = QApplication(sys.argv)
 
-    mainWindow = ButtonWindow()
-    mainWindow.show()
+    buttonWindow = ButtonWindow()
+    buttonWindow.show()
 
     app.exec_()
