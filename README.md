@@ -8,5 +8,5 @@ Python, C, Ros, Opencv, Qt, Arduino
 ## 참고한 오픈소스
 https://github.com/huangdii/servingbot
 ## 프로젝트 과정
-- [1일차-06.27](Schedule/20230627.md)
-- [2일차-06.28](Schedule/20230628.md)
+- [23.06.27](Schedule/20230627.md)
+- [23.06.28](Schedule/20230628.md)
