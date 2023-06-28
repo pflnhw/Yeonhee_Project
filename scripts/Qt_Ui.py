@@ -1,5 +1,6 @@
-from PySide2.QtWidgets import(QApplication, QWidget, QVBoxLayout, QLabel, QFrame, QSizePolicy, QPushButton, QFileDialog, QMessageBox)
-from PySide2.QtGui import QPixmap, QImage
+from PySide2.QtWidgets import *
+from PySide2.QtGui import *
+from PySide2.QtCore import *
 import sys
 
 class MainWindow(QWidget):
@@ -17,6 +18,26 @@ class MainWindow(QWidget):
         image = QImage(fileName)
         self.imageLabel.setPixmap(QPixmap.fromImage(image))
 
+        # 아이디 입력창
+        self.idLineEdit = QLineEdit(self)
+        self.idLineEdit.setPlaceholderText('아이디를 입력')
+        # 유효성확인 설정
+        idRegExp = QRegExp('[A-Za-z0-9]{4,16}')
+        idValidator = QRegExpValidator(idRegExp, self)
+        self.idLineEdit.setValidator(idValidator)
+
+        # 비밀번호 입력창
+        self.passwordLineEdit = QLineEdit(self)
+        self.passwordLineEdit.setPlaceholderText('비밀번호 입력')
+        self.passwordLineEdit.setEchoMode(QLineEdit.Password)
+        # 유효성확인 설정
+        passwordRegExp = QRegExp('[A-Za-z0-9]{8,20}')
+        passwordValidator = QRegExpValidator(passwordRegExp, self)
+        self.passwordLineEdit.setValidator(passwordValidator)
+
+        self.visiblePasswordCheckBox = QCheckBox('비밀번호표시', self)
+        self.visiblePasswordCheckBox.toggled.connect(self.onToggledPassword)
+
         # 로그인 버튼 생성
         loginButton = QPushButton('로그인')
         loginButton.clicked.connect(self.login)
@@ -28,6 +49,9 @@ class MainWindow(QWidget):
         # layout 생성
         layout = QVBoxLayout()
         layout.addWidget(self.imageLabel)
+        layout.addWidget(self.idLineEdit)
+        layout.addWidget(self.passwordLineEdit)
+        layout.addWidget(self.visiblePasswordCheckBox)
         layout.addWidget(loginButton)
         layout.addWidget(signupButton)
 
@@ -35,6 +59,12 @@ class MainWindow(QWidget):
 
         # 해당 위젯의 크기 조절
         self.resize(QApplication.primaryScreen().availableSize()/2)
+
+    def onToggledPassword(self, toggled):
+        if toggled:
+            self.passwordLineEdit.setEchoMode(QLineEdit.Normal)
+        else:
+            self.passwordLineEdit.setEchoMode(QLineEdit.Password)
 
     def login(self):
         pass
