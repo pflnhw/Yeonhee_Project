@@ -5,11 +5,12 @@
 > 팀원 : 주영호, 고으뜸, 황원중
 ## 기술스택
 - ```Python```
-- ```C```
+- ```C++```
 - ```Ros```
 - ```Opencv```
 - ```Qt```
 - ```Arduino```
+- ```Git```
 ## 참고한 오픈소스
 https://github.com/huangdii/servingbot
 ## 프로젝트 과정
