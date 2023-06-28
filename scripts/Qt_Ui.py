@@ -1,15 +1,19 @@
-from PySide2.QtWidgets import *
-from PySide2.QtGui import *
-from PySide2.QtCore import *
+from PyQt5.QtWidgets import *
+from PyQt5.QtGui import *
+from PyQt5.QtCore import *
 import sys
 import time
+import json
+
+localDatabase = {}
+users = []
 
 class ButtonWindow(QWidget):
     def __init__(self, parent=None):
         QWidget.__init__(self, parent)
         self.setWindowTitle('Button Window')
 
-        # 서빙로봇 MOVE 버튼 생성
+        # 서빙로봇 MOVE 1~4 버튼 생성
         self.moveButton1 = QPushButton('1번')
         self.moveButton1.clicked.connect(self.move)
         self.moveButton2 = QPushButton('2번')
@@ -25,6 +29,7 @@ class ButtonWindow(QWidget):
         self.buttonLayout1.addWidget(self.moveButton3)
         self.buttonLayout1.addWidget(self.moveButton4)
 
+        # 서빙로봇 MOVE 5~8 버튼 생성
         self.moveButton5 = QPushButton('5번')
         self.moveButton5.clicked.connect(self.move)
         self.moveButton6 = QPushButton('6번')
@@ -40,6 +45,7 @@ class ButtonWindow(QWidget):
         self.buttonLayout2.addWidget(self.moveButton7)
         self.buttonLayout2.addWidget(self.moveButton8)
 
+        # 서빙로봇 MOVE 9~12 버튼 생성
         self.moveButton9 = QPushButton('9번')
         self.moveButton9.clicked.connect(self.move)
         self.moveButton10 = QPushButton('10번')
@@ -55,6 +61,7 @@ class ButtonWindow(QWidget):
         self.buttonLayout3.addWidget(self.moveButton11)
         self.buttonLayout3.addWidget(self.moveButton12)
 
+        # 서빙로봇 MOVE 13~16 버튼 생성
         self.moveButton13 = QPushButton('13번')
         self.moveButton13.clicked.connect(self.move)
         self.moveButton14 = QPushButton('14번')
@@ -70,6 +77,7 @@ class ButtonWindow(QWidget):
         self.buttonLayout4.addWidget(self.moveButton15)
         self.buttonLayout4.addWidget(self.moveButton16)
 
+        # 서빙로봇 MOVE 17~20 버튼 생성
         self.moveButton17 = QPushButton('17번')
         self.moveButton17.clicked.connect(self.move)
         self.moveButton18 = QPushButton('18번')
@@ -85,6 +93,7 @@ class ButtonWindow(QWidget):
         self.buttonLayout5.addWidget(self.moveButton19)
         self.buttonLayout5.addWidget(self.moveButton20)
 
+        # 레이아웃
         layout = QVBoxLayout()
         layout.addWidget(groupBox1)
         layout.addWidget(groupBox2)
@@ -98,9 +107,7 @@ class ButtonWindow(QWidget):
 
     def move(self):
         pass
-
-
-
+    
 class MainWindow(QWidget):
     def __init__(self, parent=None):
         QWidget.__init__(self, parent)
@@ -139,11 +146,11 @@ class MainWindow(QWidget):
 
         # 로그인 버튼 생성
         loginButton = QPushButton('로그인')
-        loginButton.clicked.connect(self.login)
+        loginButton.clicked.connect(self.onClickSigIn)
 
         # 회원가입 버튼 생성
         signupButton = QPushButton('회원가입')
-        signupButton.clicked.connect(self.signup)
+        signupButton.clicked.connect(self.onClickSigUp)
 
         # layout 생성
         layout = QVBoxLayout()
@@ -159,16 +166,15 @@ class MainWindow(QWidget):
         # 해당 위젯의 크기 조절
         self.resize(QApplication.primaryScreen().availableSize()/2)
 
+    # 비밀번호 표시
     def onToggledPassword(self, toggled):
         if toggled:
             self.passwordLineEdit.setEchoMode(QLineEdit.Normal)
         else:
             self.passwordLineEdit.setEchoMode(QLineEdit.Password)
 
-    def login(self):
-        pass
-
-    def signup(self):
+    # 아이디, 비밀번호 저장
+    def onClickSigUp(self):
         inputId = self.idLineEdit.text()
         inputPW = self.passwordLineEdit.text()
         print('onClickSignUp inputId:', inputId)
@@ -177,14 +183,70 @@ class MainWindow(QWidget):
         # 등록진행
         self.onSignUp(inputId, inputPW)
 
+    # 회원가입
     def onSignUp(self, id, pw):
-        # 회원가입한 시간
         now = time.time()
-        # TODO:이미 가입된 사용자가 없는지 확인
-        isExists = False
-        pass
 
-if __name__ == '__main__':
+        for user_1 in users:
+            userId = user_1['id']
+            if id == userId:
+                print('이미 존재하는 사용자')
+                return
+
+        new_user = {
+            'id': id,
+            'pw': pw,
+            'created': now,
+            'modified': now,
+        }
+
+        users.append(new_user)
+        localDatabase['users'] = users
+
+        # localDatabase를 json 파일로 생성 후 저장
+        with open('./db.json', 'w') as f:
+            json.dump(localDatabase, f, indent=2)
+    
+    # 아이디, 비밀번호 저장
+    def onClickSigIn(self):
+        print("onClickSigIn")
+
+        inputId = self.idLineEdit.text()
+        inputPw = self.passwordLineEdit.text()
+        print("onClickSigIn inputId: ", inputId)
+        print("onClickSigIn inputPw: ", inputPw)
+
+        self.onSigIn(inputId, inputPw)
+
+    # 로그인
+    def onSigIn(self, id, pw):
+        isAuth = False
+        for user in users:
+            userId = user['id']
+            userPw = user['pw']
+
+            if id == userId and pw == userPw:
+                # 인증됨
+                isAuth = True
+                break
+
+        # isAuth를 기준으로 로그인 상태를 갱신
+        print('isAuth: ', isAuth)
+        print('id: ', id)
+
+        return isAuth
+
+def prepare():
+    # 파일 데이터를 읽어와 메모리에 준비
+    with open('./db.json') as f:
+        localDatabase = json.load(f)
+
+    global users
+    users = localDatabase.get('users', [])
+    # print("users: ", users)
+
+if __name__ == "__main__":
+    prepare()
     app = QApplication(sys.argv)
 
     mainWindow = MainWindow()
