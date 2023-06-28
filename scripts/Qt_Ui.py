@@ -1,6 +1,6 @@
-from PyQt5.QtWidgets import *
-from PyQt5.QtGui import *
-from PyQt5.QtCore import *
+from PySide2.QtWidgets import *
+from PySide2.QtGui import *
+from PySide2.QtCore import *
 from ButtonWindow import ButtonWindow
 import sys
 import time
@@ -90,8 +90,8 @@ class MainWindow(QWidget):
 
         for user_1 in users:
             userId = user_1['id']
-            if id == userId:
-                print('이미 존재하는 사용자')
+            if id == userId or len(id)<3:
+                print('이미 존재하는 사용자거나 너무 짧습니다.')
                 return
 
         new_user = {
@@ -129,6 +129,10 @@ class MainWindow(QWidget):
             if id == userId and pw == userPw:
                 # 인증됨
                 isAuth = True
+
+                self.close()
+                self.second = ButtonWindow()
+
                 break
 
         # isAuth를 기준으로 로그인 상태를 갱신
