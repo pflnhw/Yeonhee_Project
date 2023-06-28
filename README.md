@@ -14,4 +14,4 @@ Python, C, Ros, Opencv, Qt, Arduino
 https://github.com/huangdii/servingbot
 ## 프로젝트 과정
 - [1일차:0627](Schedule/20230627.md)
-- [2일차:0627](Schedule/20230628.md)
+- [2일차:0628](Schedule/20230628.md)
