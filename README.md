@@ -19,3 +19,4 @@ https://github.com/huangdii/servingbot
 ## 프로젝트 과정
 - [23.06.27](Schedule/20230627.md)
 - [23.06.28](Schedule/20230628.md)
+- [23.06.29](Schedule/20230629.md)
