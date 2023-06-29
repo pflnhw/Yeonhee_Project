@@ -14,8 +14,9 @@
 - ```Qt```
 - ```Arduino```
 - ```Git```
-## 참고한 오픈소스
-https://github.com/huangdii/servingbot
+## 참고한 사이트
+- https://github.com/huangdii/servingbot
+- https://docs.roas.co.kr/scout_mini.html#
 ## 프로젝트 과정
 - [23.06.27](Schedule/20230627.md)
 - [23.06.28](Schedule/20230628.md)
