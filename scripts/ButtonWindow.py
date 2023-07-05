@@ -1,9 +1,15 @@
+#!/usr/bin/python
+# -*- coding: utf-8 -*-
+
 from PySide2.QtWidgets import *
 from PySide2.QtGui import *
 from PySide2.QtCore import *
 from BackButtonWindow import BackButtonWindow
 import sys
 import time
+
+import rospy
+from geometry_msgs.msg import Twist
 
 class ButtonWindow(QWidget):
     def __init__(self, parent=None):
@@ -107,6 +113,15 @@ class ButtonWindow(QWidget):
 
     def move(self):
         self.second = BackButtonWindow()
+        rospy.init_node('cmd_vel_publisher', anonymous=True)
+        pub = rospy.Publisher('cmd_vel', Twist, queue_size=10)
+        rate = rospy.Rate(10)  # 퍼블리셔의 발행 속도 설정
+
+        vel_msg = Twist()
+        vel_msg.linear.x = 0.2  # 원하는 선속도 설정
+        vel_msg.angular.z = 0.0  # 각속도는 0으로 설정
+        pub.publish(vel_msg)
+        rate.sleep()
 
 
 if __name__ == '__main__':
