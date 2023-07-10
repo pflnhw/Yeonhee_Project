@@ -1,0 +1,217 @@
+import numpy as np
+import cv2
+import sys
+import rospy
+from PySide2.QtWidgets import *
+from PySide2.QtCore import *
+from PySide2.QtGui import *
+
+
+class MotorDriver:
+    def __init__(self):
+        print("Initializing motor driver & comms node")
+        self.speed_command = 0.0
+        self.dir_command = 0.0
+
+    def speed_callback(self, speed):
+        self.speed_command = speed
+        self.last_command_time = rospy.get_rostime()
+        self.timed_out = False
+
+
+    def dir_callback(self, msg):
+        self.dir_command = msg.data
+
+    def send_command(self):
+        print('Sending speed = {}, dir = {}'.format(self.speed_command, self.dir_command))
+        # 모터 드라이버에 명령을 보내는 코드를 작성합니다.
+
+
+class LineTracer(QWidget):
+    def __init__(self, parent=None):
+        QWidget.__init__(self, parent)
+        self.setWindowTitle('Line Tracer')
+        self.show()
+
+        self.image_label = QLabel(self)
+        self.image_label.setFixedSize(640, 480)
+
+        # 수집된 이미지를 표시할 QTimer 생성
+        self.timer = QTimer(self)
+        self.timer.timeout.connect(self.update_frame)
+
+        # OpenCV 웹캠 초기화
+        self.cap = cv2.VideoCapture(0)
+
+        # 모터 드라이버 초기화
+        self.motor_driver = MotorDriver()
+        
+        # 방향과 속도 변수 초기화
+        self.speed_command = 0.0
+        self.dir_command = 0.0
+
+        # GUI 레이아웃 설정
+        layout = QVBoxLayout(self)
+        layout.addWidget(self.image_label)
+        self.setLayout(layout)
+
+        self.start_camera()
+
+    def start_camera(self):
+        # QTimer를 사용하여 매 프레임마다 이미지 업데이트
+        self.timer.start(30)
+
+    def stop_camera(self):
+        # QTimer 중지
+        self.timer.stop()
+
+    def update_frame(self):
+        # 웹캠 프레임 읽기
+        ret, frame = self.cap.read()
+        # print(self.cap.get(cv2.CAP_PROP_FRAME_WIDTH))
+        # print(self.cap.get(cv2.CAP_PROP_FRAME_HEIGHT))
+
+        if ret:
+            frame = cv2.resize(frame, (1280, 720))
+            frame_height, frame_width, _ = frame.shape
+            snip = frame[0:frame_height // 2, 0:frame_width // 2, :]
+
+            self.direction = 'F'
+
+            # snip = frame[500:720, :]
+            # snip = frame[:, :]
+
+            # Threshold -> Only Black Line
+            gray = cv2.cvtColor(snip, cv2.COLOR_BGR2GRAY)
+            _, thresh = cv2.threshold(gray, 90, 255, cv2.THRESH_BINARY)
+
+            # Noise Canceling
+            kernel = np.ones((5, 5), np.uint8)
+            thresh = cv2.dilate(thresh, kernel, iterations=1)
+
+            # Edge Detection
+            edges = cv2.Canny(thresh, 50, 150)
+
+            lines = cv2.HoughLines(edges, 1, np.pi / 180, 100)
+
+            left_lines = []
+            right_lines = []
+
+            if lines is not None:
+                for line in lines:
+                    rho, theta = line[0]
+                    if theta < np.pi / 2:
+                        left_lines.append((rho, theta))
+                    else:
+                        right_lines.append((rho, theta))
+
+            if len(left_lines) > 0:
+                left_rho, left_theta = np.median(left_lines, axis=0)
+                a = np.cos(left_theta)
+                b = np.sin(left_theta)
+                x0 = a * left_rho
+                y0 = b * left_rho
+                x1 = int(x0 + 400 * (-b))
+                y1 = int(y0 + 400 * (a))
+                x2 = int(x0 - 600 * (-b))
+                y2 = int(y0 - 600 * (a))
+                cv2.line(snip, (x1, y1), (x2, y2), (0, 0, 255), 2)
+                cv2.putText(snip, 'Left line', (x2, y2), cv2.FONT_HERSHEY_SIMPLEX, 0.5, (0, 0, 255), 2)
+
+            if len(right_lines) > 0:
+                right_rho, right_theta = np.median(right_lines, axis=0)
+                a = np.cos(right_theta)
+                b = np.sin(right_theta)
+                x0 = a * right_rho
+                y0 = b * right_rho
+                x1 = int(x0 + 400 * (-b))
+                y1 = int(y0 + 400 * (a))
+                x2 = int(x0 - 600 * (-b))
+                y2 = int(y0 - 600 * (a))
+                cv2.line(snip, (x1, y1), (x2, y2), (255, 0, 0), 2)
+                cv2.putText(snip, 'Right line', (x2, y2), cv2.FONT_HERSHEY_SIMPLEX, 0.5, (255, 0, 0), 2)
+
+            # Find the contour
+            contours, _ = cv2.findContours(thresh.copy(), cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
+
+            # Find the contour with the approximate center
+            center_contour = None
+            min_distance = float('inf')
+            for contour in contours:
+                M = cv2.moments(contour)
+                if M["m00"] != 0:
+                    cX = int(M["m10"] / M["m00"])
+                    cY = int(M["m01"] / M["m00"])
+                    distance = abs(cX - snip.shape[1] // 2)
+                    if distance < min_distance:
+                        center_contour = contour
+                        min_distance = distance
+
+            # Draw the center contour
+            if center_contour is not None:
+                cv2.drawContours(snip, [center_contour], -1, (0, 255, 0), 2)
+
+                # Calculate the center coordinates
+                M = cv2.moments(center_contour)
+                if M["m00"] != 0:
+                    cX = int(M["m10"] / M["m00"])
+                    cY = int(M["m01"] / M["m00"])
+                    cv2.circle(snip, (cX, cY), 5, (0, 255, 0), -1)
+                    # cv2.putText(snip, 'center x value:' + str(cX) , (cX, cY), cv2.FONT_HERSHEY_SIMPLEX, 0.5, (0, 255, 0), 2)
+                    # screen size : 1280x720    ->  1280x220
+
+                    snip_width = 1280
+                    snip_left_width = snip_width / 2 - 50
+                    snip_right_width = snip_width / 2 + 50
+
+                    if (cX < snip_left_width):
+                        self.direction = 'L'
+                    elif (cX > snip_right_width):
+                        self.direction = 'R'
+                    elif (cX >= snip_left_width and cX <= snip_right_width):
+                        self.direction = 'F'
+
+                    cv2.putText(snip, 'direction:' + self.direction, (cX, cY), cv2.FONT_HERSHEY_SIMPLEX, 0.5, (0, 255, 0), 2)
+
+            # OpenCV BGR 이미지를 RGB로 변환하여 QImage로 변환
+            rgb_image = cv2.cvtColor(snip, cv2.COLOR_BGR2RGB)
+            h, w, ch = rgb_image.shape
+            bytes_per_line = ch * w
+            q_image = QImage(rgb_image.data, w, h, bytes_per_line, QImage.Format_RGB888)
+
+            # 이미지 표시
+            self.image_label.setPixmap(QPixmap.fromImage(q_image))
+
+            # 모터 드라이버에 명령 전송
+            self.motor_driver.speed_callback(self.speed_command)
+            self.motor_driver.dir_callback(self.dir_command)
+            self.motor_driver.send_command()
+
+    def keyPressEvent(self, event):
+        key = event.key()
+
+        if key == Qt.Key_Up:
+            self.speed_command = 1.0  # 앞으로 이동
+            self.dir_command = 0.0
+        elif key == Qt.Key_Down:
+            self.speed_command = -1.0  # 뒤로 이동
+            self.dir_command = 0.0
+        elif key == Qt.Key_Left:
+            self.speed_command = 0.0
+            self.dir_command = -1.0  # 왼쪽으로 회전
+        elif key == Qt.Key_Right:
+            self.speed_command = 0.0
+            self.dir_command = 1.0  # 오른쪽으로 회전
+        elif key == Qt.Key_Space:
+            self.speed_command = 0.0
+            self.dir_command = 0.0  # 정지
+
+    def closeEvent(self, event):
+        self.stop_camera()
+
+if __name__ == "__main__":
+    app = QApplication(sys.argv)
+
+    linetracer = LineTracer()
+
+    app.exec_()
