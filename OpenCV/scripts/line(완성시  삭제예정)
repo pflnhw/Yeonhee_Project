@@ -1,3 +1,7 @@
+#!/usr/bin/python
+#!-*- coding:utf-8 -*-
+
+
 import rospy
 from std_msgs.msg import String
 from sensor_msgs.msg import Image
@@ -11,7 +15,7 @@ import numpy as np
 
 class CamWindow(QWidget):
     def __init__(self, parent=None):
-        super().__init__(parent)
+        super(CamWindow, self).__init__(parent)
         self.setWindowTitle('CamWindow')
 
         self.image_label = QLabel(self)
@@ -24,30 +28,17 @@ class CamWindow(QWidget):
         # OpenCV 웹캠 초기화
         self.cap = cv2.VideoCapture(0)
 
+        # CvBridge 객체 생성
+        self.bridge = CvBridge()
+
+        # ROS 퍼블리셔 생성
+        self.pub = rospy.Publisher('image_topic', Image, queue_size=10)
+
+
         # GUI 레이아웃 설정
         layout = QVBoxLayout(self)
         layout.addWidget(self.image_label)
         self.setLayout(layout)
-
-        # ROS 초기화
-        rospy.init_node('line_detection')
-        self.pub = rospy.Publisher('motion_control', String, queue_size=1)
-        self.bridge = CvBridge()
-
-        # 버튼 생성
-        self.forwardButton = QPushButton('전진')
-        self.forwardButton.clicked.connect(self.forward)
-        self.backwardButton = QPushButton('후진')
-        self.backwardButton.clicked.connect(self.backward)
-        self.stopButton = QPushButton('정지')
-        self.stopButton.clicked.connect(self.stop)
-
-        # 버튼 레이아웃 설정
-        button_layout = QHBoxLayout()
-        button_layout.addWidget(self.forwardButton)
-        button_layout.addWidget(self.backwardButton)
-        button_layout.addWidget(self.stopButton)
-        layout.addLayout(button_layout)
 
     def start_camera(self):
         # QTimer를 사용하여 매 프레임마다 이미지 업데이트
@@ -62,6 +53,7 @@ class CamWindow(QWidget):
         ret, frame = self.cap.read()
         if ret:
             frame = cv2.resize(frame, (1280, 720))
+            # snip = frame[500:720, :]
             snip = frame[:, :]
 
             # Threshold -> Only Black Line
@@ -114,6 +106,51 @@ class CamWindow(QWidget):
                 cv2.line(snip, (x1, y1), (x2, y2), (255, 0, 0), 2)
                 cv2.putText(snip, 'Right line', (x2, y2), cv2.FONT_HERSHEY_SIMPLEX, 0.5, (255, 0, 0), 2)
 
+            # Find the contour
+            # contours, _ = cv2.findContours(thresh.copy(), cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
+            _, contours, _ = cv2.findContours(thresh.copy(), cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
+
+           
+
+            # Find the contour with the approximate center
+            center_contour = None
+            min_distance = float('inf')
+            for contour in contours:
+                M = cv2.moments(contour)
+                if M["m00"] != 0:
+                    cX = int(M["m10"] / M["m00"])
+                    cY = int(M["m01"] / M["m00"])
+                    distance = abs(cX - snip.shape[1] // 2)
+                    if distance < min_distance:
+                        center_contour = contour
+                        min_distance = distance
+
+            # Draw the center contour
+            if center_contour is not None:
+                cv2.drawContours(snip, [center_contour], -1, (0, 255, 0), 2)
+
+                # Calculate the center coordinates
+                M = cv2.moments(center_contour)
+                if M["m00"] != 0:
+                    cX = int(M["m10"] / M["m00"])
+                    cY = int(M["m01"] / M["m00"])
+                    cv2.circle(snip, (cX, cY), 5, (0, 255, 0), -1)
+                    # cv2.putText(snip, 'center x value:' + str(cX) , (cX, cY), cv2.FONT_HERSHEY_SIMPLEX, 0.5, (0, 255, 0), 2)
+                    # screen size : 1280x720    ->  1280x220
+
+                    snip_width = 1280
+                    snip_left_width = snip_width / 2 - 50
+                    snip_right_width = snip_width / 2 + 50
+
+                    if (cX < snip_left_width):
+                        direction = 'L'
+                    elif (cX > snip_right_width):
+                        direction = 'R'
+                    elif (cX >= snip_left_width and cX <= snip_right_width):
+                        direction = 'F'
+
+                    cv2.putText(snip, 'direction:' + direction , (cX, cY), cv2.FONT_HERSHEY_SIMPLEX, 0.5, (0, 255, 0), 2)
+
             # OpenCV BGR 이미지를 RGB로 변환하여 QImage로 변환
             rgb_image = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
             h, w, c = rgb_image.shape
@@ -141,6 +178,10 @@ class ButtonWindow(QWidget):
         QWidget.__init__(self, parent)
         self.setWindowTitle('Button Window')
         self.show()
+
+        # ROS 노드 초기화
+        rospy.init_node("button_window")
+
         # 서빙로봇 MOVE 버튼 생성
         self.moveButton1 = QPushButton('1번')
         self.moveButton1.clicked.connect(self.move)
@@ -257,6 +298,7 @@ class ButtonWindow(QWidget):
         self.camWindow.show()
 
 if __name__ == '__main__':
+    rospy.init_node("button_window")
     app = QApplication(sys.argv)
 
     buttonWindow = ButtonWindow()
