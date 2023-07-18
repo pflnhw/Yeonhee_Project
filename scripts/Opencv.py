@@ -68,7 +68,7 @@ def Stop():
     global angle, speed
     speed = 0
     angle = 0
-
+    
 def Start():
     global speed, angle
     rospy.init_node('cmd_vel_publisher', anonymous=True)
