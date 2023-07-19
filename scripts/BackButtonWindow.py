@@ -5,11 +5,12 @@ from PySide2.QtWidgets import *
 from PySide2.QtGui import *
 from PySide2.QtCore import *
 import sys
-import time
+from LineDetect import Start
 
 class BackButtonWindow(QWidget):
     def __init__(self, parent=None):
         QWidget.__init__(self, parent)
+        # self.x = x
         self.setWindowTitle('BackButton Window')
         self.show()
 
@@ -29,8 +30,35 @@ class BackButtonWindow(QWidget):
 
     def onClickBackMove(self):
         self.close()
-        pass
-    
+        # if self.x == 1:
+        #     self.BackMove1()
+        # elif self.x == 2:
+        #     self.BackMove2()
+        # elif self.x == 3:
+        self.BackMove4()
+        # elif self.x == 4:
+        #     self.BackMove4()
+
+    # def BackMove1(self):
+    #     # print(self.x)
+    #     Qr_res = "http://m.site.naver.com/1aDPf"
+    #     Start(Qr_res)
+
+
+    # def BackMove2(self):
+    #     # print(self.x)
+    #     Qr_res = "http://m.site.naver.com/1aDPD"
+    #     Start(Qr_res)
+
+    # def BackMove3(self):
+    #     # print(self.x)
+    #     Qr_res = "http://m.site.naver.com/1aDPR"
+    #     Start(Qr_res)
+
+    def BackMove4(self):
+        # print(self.x)
+        Qr_res = "http://m.site.naver.com/1aDPY"
+        Start(Qr_res)
 
 if __name__ == '__main__':
     app = QApplication(sys.argv)
