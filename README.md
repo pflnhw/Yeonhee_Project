@@ -5,7 +5,7 @@
 # Development Environment
 - Operating System : ```Window``` ```Ubuntu 18.04```
 - Integrated Development Environment(IDE) : ```VS Code```
-## Technology Stack
+# Technology Stack
 - ```Python```
 - ```C++```
 - ```Ros```
@@ -26,8 +26,9 @@
 
 ![11859160_2](https://github.com/pflnhw/Yeonhee_Project/assets/129159977/256d5502-34c3-47f5-b9e4-c5c0d7b1fe07)
 
+# Common Software Development Environments
+Ubuntu 18.04 Installation
 
-
-## 참고한 사이트
-- https://github.com/huangdii/servingbot
-- https://docs.roas.co.kr/scout_mini.html#
+1. ROS Installation
+2. scout_mini SDK Installation Reference Site <https://github.com/agilexrobotics/ugv_sdk>
+3. scout_mini Package installation Reference Site <https://github.com/agilexrobotics/scout_ros>
