@@ -14,13 +14,15 @@
 - ```Arduino```
 - ```Git```
 # Common Hardware Development Environments
-- Scout Mini
+- ```Scout Mini```
 
 ![스크린샷, 2023-06-30 17-40-58](https://github.com/ajhwan/Yeonhee_Project/assets/129160008/fd594c4b-cb59-471d-8e62-fd93eac70102)
 
-- RPLIDAR A1M8
+- ```RPLIDAR A1M8```
 
 ![스크린샷, 2023-06-30 17-30-22](https://github.com/ajhwan/Yeonhee_Project/assets/129160008/c9d90c5d-27ec-45b1-b806-aa6a70ecf5c5)
+
+- ```DRGO-WC720```
 
 
 
