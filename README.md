@@ -1,11 +1,11 @@
-# Introduction to project :
+# Introduction To Project :
 ```Unmanned Vehicle Using Artificial Intelligence In ROS```
 # Project Purpose :
 ```SCOUT_MINI, line Tracer, Serving Robot Using QR Code```
-# development environment
+# Development Environment
 - Operating System : ```Window``` ```Ubuntu 18.04```
 - Integrated Development Environment(IDE) : ```VS Code```
-## 기술스택
+## Technology Stack
 - ```Python```
 - ```C++```
 - ```Ros```
