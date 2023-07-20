@@ -1,9 +1,8 @@
-# 연희직업학교 팀프로젝트
-## 서빙로봇 프로젝트
-## 팀원
-> 조장 : 안지환 <br/>
-> 팀원 : 주영호, 고으뜸, 황원중
-## 개발환경
+# Introduction to project :
+```Unmanned vehicle using artificial intelligence in ROS```
+## Project Purpose :
+```SCOUT_MINI, line tracer, serving robot using QR code```
+## Common Hardware Development Environments
 - 운영체제 : ```Window``` ```Ubuntu 18.04```
 - 통합개발환경(IDE) : ```VS Code```
 ## 기술스택
