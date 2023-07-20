@@ -33,4 +33,4 @@ Ubuntu 18.04 Installation
 2. scout_mini SDK Installation Reference Site <https://github.com/agilexrobotics/ugv_sdk>
 3. scout_mini Package installation Reference Site <https://github.com/agilexrobotics/scout_ros>
 
-# Project. line_detect
+# Project. Line_Detect
