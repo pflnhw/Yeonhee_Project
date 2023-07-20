@@ -34,4 +34,3 @@ Ubuntu 18.04 Installation
 3. scout_mini Package installation Reference Site <https://github.com/agilexrobotics/scout_ros>
 
 # Project. Line_Detect
-
