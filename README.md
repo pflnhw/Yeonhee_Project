@@ -24,6 +24,8 @@
 
 - ```DRGO-WC720```
 
+![11859160_2](https://github.com/pflnhw/Yeonhee_Project/assets/129159977/256d5502-34c3-47f5-b9e4-c5c0d7b1fe07)
+
 
 
 ## 참고한 사이트
