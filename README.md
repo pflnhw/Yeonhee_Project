@@ -34,4 +34,4 @@ Ubuntu 18.04 Installation
 3. scout_mini Package installation Reference Site <https://github.com/agilexrobotics/scout_ros>
 
 # Project. Line_Detect
-라인트레이서 프로젝트를 진행하며 큰 성장을 하게 된 것 같습니다. 프로젝트 초기에는 많은 어려움과 문제들이 있었지만, 함께 고민하고 노력하며 문제들을 해결해 나가는 과정에서 동료들과의 소통과 협업 능력이 크게 향상되었습니다. 또한, 개별적으로 맡은 역할 외에도 다양한 부분에서 협력하면서 일하는 경험을 통해 팀워크의 중요성을 깨닫게 되었습니다. 이번 프로젝트에서 배운 것들을 다음 프로젝트에서도 적극적으로 활용하고, 팀원들과 함께 성장해 나가는 모습을 보이고 싶습니다.
+
