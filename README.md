@@ -11,8 +11,8 @@
 - ```Ros```
 - ```Opencv```
 - ```Qt```
-- ```Arduino```
 - ```Git```
+- ```Pyzbar```
 # Common Hardware Development Environments
 - ```Scout Mini```
 
