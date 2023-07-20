@@ -1,10 +1,10 @@
 # Introduction to project :
-```Unmanned vehicle using artificial intelligence in ROS```
+```Unmanned Vehicle Using Artificial Intelligence In ROS```
 # Project Purpose :
-```SCOUT_MINI, line tracer, serving robot using QR code```
-# Common Hardware Development Environments
-- 운영체제 : ```Window``` ```Ubuntu 18.04```
-- 통합개발환경(IDE) : ```VS Code```
+```SCOUT_MINI, line Tracer, Serving Robot Using QR Code```
+# development environment
+- Operating System : ```Window``` ```Ubuntu 18.04```
+- Integrated Development Environment(IDE) : ```VS Code```
 ## 기술스택
 - ```Python```
 - ```C++```
