@@ -13,7 +13,7 @@
 - ```Qt```
 - ```Arduino```
 - ```Git```
-## 사용한 장비
+# Common Hardware Development Environments
 - Scout Mini
 
 ![스크린샷, 2023-06-30 17-40-58](https://github.com/ajhwan/Yeonhee_Project/assets/129160008/fd594c4b-cb59-471d-8e62-fd93eac70102)
