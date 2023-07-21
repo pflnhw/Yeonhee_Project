@@ -18,9 +18,9 @@
 
 ![스크린샷, 2023-06-30 17-40-58](https://github.com/ajhwan/Yeonhee_Project/assets/129160008/fd594c4b-cb59-471d-8e62-fd93eac70102)
 
-- ```RPLIDAR A1M8```
+- ```DRGO-WC720```
 
-![스크린샷, 2023-06-30 17-30-22](https://github.com/ajhwan/Yeonhee_Project/assets/129160008/c9d90c5d-27ec-45b1-b806-aa6a70ecf5c5)
+![11859160_2](https://github.com/pflnhw/Yeonhee_Project/assets/129159977/256d5502-34c3-47f5-b9e4-c5c0d7b1fe07)
 
 # Common Software Development Environments
 Ubuntu 18.04 Installation
