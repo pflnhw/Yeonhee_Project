@@ -25,7 +25,7 @@
 # Flow Chart
 ![Flow Chart](https://github.com/ajhwan/Yeonhee_Project/assets/129160008/396fcc7c-e602-4cb1-bcc3-5eabb557adf4)
 
-# Videos
+# Videos & Images
 
 - ## Qt UI
 ![Qt-UI-video](https://github.com/ajhwan/Yeonhee_Project/assets/129160008/0b0211c3-8d86-4081-a9db-14ce6c0a65d6)
