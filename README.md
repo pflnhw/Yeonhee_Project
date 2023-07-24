@@ -8,7 +8,7 @@
 # Technology Stack
 - ```Python```
 - ```C++```
-- ```Ros Noetic```
+- ```Ros Melodic```
 - ```OpenCV```
 - ```Qt```
 - ```Git```
