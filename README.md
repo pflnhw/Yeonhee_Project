@@ -9,7 +9,7 @@
 - ```Python```
 - ```C++```
 - ```Ros Noetic```
-- ```Opencv```
+- ```OpenCV```
 - ```Qt```
 - ```Git```
 - ```Pyzbar```
