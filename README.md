@@ -27,7 +27,7 @@
 
 # Videos
 
-- ## Qt UI Video
+- ## Qt UI
 ![Qt-UI-video](https://github.com/ajhwan/Yeonhee_Project/assets/129160008/0b0211c3-8d86-4081-a9db-14ce6c0a65d6)
 
 - ## Line detection
@@ -39,7 +39,7 @@
 - ## Scout Mini moving along the line
 https://github.com/ajhwan/Yeonhee_Project/assets/129160008/b33c0cd3-d2ab-4b55-a407-222749e5b8f7
 
-- ## Motion Explanation Video
+- ## Motion Explanation
 ![Explanation video](https://github.com/ajhwan/Yeonhee_Project/assets/129160008/cbb9ca48-b6b1-49b0-ac00-270fbd28f01f)
 
 
