@@ -30,10 +30,10 @@
 - ## Qt UI
 ![Qt-UI-video](https://github.com/ajhwan/Yeonhee_Project/assets/129160008/0b0211c3-8d86-4081-a9db-14ce6c0a65d6)
 
-- ## Line detection
+- ## Line Detection
 ![line detection](https://github.com/ajhwan/Yeonhee_Project/assets/129160008/22be71ea-f411-4039-b237-e7066de972f8)
 
-- ## QRCode detection
+- ## QR Code Detection
 ![qrcode detection](https://github.com/ajhwan/Yeonhee_Project/assets/129160008/29eaf40e-ae88-461c-b8f2-7a0c5c9f9603)
 
 - ## Scout Mini moving along the line
