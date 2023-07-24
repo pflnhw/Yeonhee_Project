@@ -33,7 +33,7 @@
 - ## Line Detection
 ![line detection](https://github.com/ajhwan/Yeonhee_Project/assets/129160008/22be71ea-f411-4039-b237-e7066de972f8)
 
-- ## QR Code Detection
+- ## QRcode Detection
 ![qrcode detection](https://github.com/ajhwan/Yeonhee_Project/assets/129160008/29eaf40e-ae88-461c-b8f2-7a0c5c9f9603)
 
 - ## Scout Mini moving along the line
